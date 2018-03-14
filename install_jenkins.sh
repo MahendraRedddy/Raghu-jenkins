@@ -25,3 +25,7 @@ Stat $? "Starting Jenkins"
 systemctl stop jenkins
 
 sed -i -e '/isSetupComplete/ s/false/true/' -e '/name/ s/NEW/RUNNING/' /var/lib/jenkins/config.xml 
+curl -s https://raw.githubusercontent.com/linuxautomations/jenkins/master/admin.xml >/var/lib/jenkins/users/admin/config.xml
+chown jenkins:jenkins /var/lib/jenkins/users/admin/config.xml
+systemctl start jenkins
+Stat $? "Configuring Jenkins"
