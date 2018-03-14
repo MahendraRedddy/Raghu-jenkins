@@ -17,6 +17,11 @@ CheckFirewall
 ### Install Jenkins
 wget -O /etc/yum.repos.d/jenkins.repo https://pkg.jenkins.io/redhat-stable/jenkins.repo
 rpm --import https://pkg.jenkins.io/redhat-stable/jenkins.io.key
-yum install jenkins java -y
-systemctl enable jenkins
+yum install jenkins java -y &>/dev/null
+Stat $? "Installing Jenkins"
+systemctl enable jenkins &>/dev/null
 systemctl start jenkins
+Stat $? "Starting Jenkins"
+systemctl stop jenkins
+
+sed -i -e '/isSetupComplete/ s/false/true/' -e '/name/ s/NEW/RUNNING/' /var/lib/jenkins/config.xml 
