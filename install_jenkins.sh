@@ -44,3 +44,12 @@ curl -s https://raw.githubusercontent.com/linuxautomations/jenkins/master/admin.
 chown jenkins:jenkins /var/lib/jenkins/users/admin/config.xml
 systemctl start jenkins
 Stat $? "Configuring Jenkins"
+
+### Final Status
+PU_IP=$(curl ifconfig.co)
+
+head_bu "Access the Jenkins using following URL and Credentials"
+info "http://$PU_IP:8080"
+info "Username : admin"
+info "Password : admin"
+
