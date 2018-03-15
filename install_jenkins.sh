@@ -19,6 +19,14 @@ Check_Jenkins_Start() {
     while [ $i -gt 0 ]; do 
         netstat -lntp | grep 8080 &>/dev/null 
         if [ $? -eq 0 ]; then 
+            j=180
+            while [ $j -gt 0 ]; do 
+                [ -f  /var/lib/jenkins/config.xml ] && break 
+                j=$(($j-10))
+                sleep 10
+                continue
+            done
+            [ ! -f  /var/lib/jenkins/config.xml ] && return 1
             return 0
         else
             i=$(($i-10))
