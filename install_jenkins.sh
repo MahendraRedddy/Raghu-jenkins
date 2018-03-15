@@ -29,6 +29,21 @@ Check_Jenkins_Start() {
     return 1
 }
 
+Check_Jenkins_Stop() {
+    i=180 # 100 Seconds
+    while [ $i -gt 0 ]; do 
+        netstat -lntp | grep 8080 &>/dev/null 
+        if [ $? -ne 0 ]; then 
+            return 0
+        else
+            i=$(($i-10))
+            sleep 10
+            continue 
+        fi 
+    done
+    return 1
+}
+
 ### Install Jenkins
 wget -O /etc/yum.repos.d/jenkins.repo https://pkg.jenkins.io/redhat-stable/jenkins.repo &>/dev/null
 rpm --import https://pkg.jenkins.io/redhat-stable/jenkins.io.key &>/dev/null
@@ -39,7 +54,8 @@ systemctl start jenkins
 Check_Jenkins_Start
 Stat $? "Starting Jenkins"
 systemctl stop jenkins
-
+Check_Jenkins_Stop
+[ $? -ne 0 ] && Stat 1 "Configuring Jenkins"
 sed -i -e '/isSetupComplete/ s/false/true/' -e '/name/ s/NEW/RUNNING/' /var/lib/jenkins/config.xml
 mkdir -p /var/lib/jenkins/users/admin 
 curl -s https://raw.githubusercontent.com/linuxautomations/jenkins/master/admin.xml >/var/lib/jenkins/users/admin/config.xml
