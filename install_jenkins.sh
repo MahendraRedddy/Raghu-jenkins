@@ -21,7 +21,7 @@ Check_Jenkins_Start() {
         if [ $? -eq 0 ]; then 
             j=180
             while [ $j -gt 0 ]; do 
-                [ -f  /var/lib/jenkins/config.xml ] && break 
+                grep isSetupComplete /var/lib/jenkins/config.xml &>/dev/null && break 
                 j=$(($j-10))
                 sleep 10
                 continue
