@@ -14,13 +14,28 @@ CheckSELinux
 ## Checking Firewall on the Server.
 CheckFirewall
 
+Check_Jenkins_Start() {
+    i=100 # 100 Seconds
+    while [ $i -gt 0 ]; do 
+        netstat -lntp | grep 8080 &>/dev/null 
+        if [ $? -eq 0 ]; then 
+            return 0
+        else
+            i=$(($i-10))
+            continue 
+        fi 
+    done
+    return 1
+}
+
 ### Install Jenkins
-wget -O /etc/yum.repos.d/jenkins.repo https://pkg.jenkins.io/redhat-stable/jenkins.repo
-rpm --import https://pkg.jenkins.io/redhat-stable/jenkins.io.key
+wget -O /etc/yum.repos.d/jenkins.repo https://pkg.jenkins.io/redhat-stable/jenkins.repo &>/dev/null
+rpm --import https://pkg.jenkins.io/redhat-stable/jenkins.io.key &>/dev/null
 yum install jenkins java -y &>/dev/null
 Stat $? "Installing Jenkins"
 systemctl enable jenkins &>/dev/null
 systemctl start jenkins
+Check_Jenkins_Start
 Stat $? "Starting Jenkins"
 systemctl stop jenkins
 
