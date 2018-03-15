@@ -22,6 +22,7 @@ Check_Jenkins_Start() {
             return 0
         else
             i=$(($i-10))
+            sleep 10
             continue 
         fi 
     done
