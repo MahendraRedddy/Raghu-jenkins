@@ -15,7 +15,7 @@ CheckSELinux
 CheckFirewall
 
 Check_Jenkins_Start() {
-    i=100 # 100 Seconds
+    i=180 # 100 Seconds
     while [ $i -gt 0 ]; do 
         netstat -lntp | grep 8080 &>/dev/null 
         if [ $? -eq 0 ]; then 
