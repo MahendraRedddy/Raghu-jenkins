@@ -73,7 +73,8 @@ Stat $? "Configuring Jenkins"
 
 ### Final Status
 PU_IP=$(curl ifconfig.co)
-
+sleep 30
+systemctl restart jenkins &>/dev/null
 head_bu "Access the Jenkins using following URL and Credentials"
 info "http://$PU_IP:8080"
 info "Username : admin"
