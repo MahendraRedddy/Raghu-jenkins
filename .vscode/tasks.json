@@ -6,7 +6,7 @@
         {
             "label": "PUSH",
             "type": "shell",
-            "command": "git add -A &>/dev/null || echo FAILED && git commit -m Upload || echo FAILED &>/dev/null && git push origin master &>/dev/null || echo FAILED && echo SUCCESS ",
+            "command": "(git add -A &>/dev/null || echo FAILED) && (git commit -m Upload &>/dev/null || echo FAILED ) && ( git push origin master &>/dev/null || echo FAILED ) && echo SUCCESS ",
             "group": {
                 "kind": "build",
                 "isDefault": true
