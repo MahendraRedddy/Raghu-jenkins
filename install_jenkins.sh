@@ -72,7 +72,7 @@ systemctl start jenkins
 Stat $? "Configuring Jenkins"
 
 ### Final Status
-PU_IP=$(curl ifconfig.co)
+PU_IP=$(curl -s ifconfig.co)
 sleep 30
 systemctl restart jenkins &>/dev/null
 head_bu "Access the Jenkins using following URL and Credentials"
